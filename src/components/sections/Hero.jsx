@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { FaArrowRight, FaDownload, FaGithub, FaLinkedinIn, FaTwitter } from 'react-icons/fa';
+import { FaArrowRight, FaDownload } from 'react-icons/fa';
 import { socialLinks } from '../../data/socialLinks';
 import sagorRoy from '../../assets/images/sagor-roy.png';
 import resume from '../../assets/resume/sagor-roy-cv.txt';
@@ -9,15 +9,15 @@ const Hero = () => {
   const [textIndex, setTextIndex] = useState(0);
   const [charIndex, setCharIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
-  const typingTexts = ['Frontend Developer', 'React Specialist', 'UI/UX Engineer', 'Web Designer'];
+  const typingTexts = ['Frontend Developer', 'React Specialist', 'UI/UX Engineer', 'Problem Solver'];
 
   useEffect(() => {
     const currentText = typingTexts[textIndex];
-    const typeSpeed = isDeleting ? 50 : 100;
+    const typeSpeed = isDeleting ? 45 : 95;
 
     const timer = setTimeout(() => {
       if (!isDeleting && charIndex === currentText.length) {
-        setTimeout(() => setIsDeleting(true), 2000);
+        setTimeout(() => setIsDeleting(true), 1600);
       } else if (isDeleting && charIndex === 0) {
         setIsDeleting(false);
         setTextIndex((prev) => (prev + 1) % typingTexts.length);
@@ -27,88 +27,93 @@ const Hero = () => {
     }, typeSpeed);
 
     return () => clearTimeout(timer);
-  }, [charIndex, isDeleting, textIndex, typingTexts]);
+  }, [charIndex, isDeleting, textIndex]);
 
   const scrollToSection = (id) => {
     const element = document.getElementById(id);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   };
 
   return (
-    <section id="home" className="min-h-screen flex items-center pt-32 pb-24 relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-radial opacity-50" />
+    <section id="home" className="relative isolate flex min-h-screen items-center overflow-hidden pb-24 pt-24 sm:pt-32 lg:pt-36">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(168,85,247,0.22),_transparent_38%),radial-gradient(circle_at_bottom_right,_rgba(59,130,246,0.2),_transparent_36%)]" />
+      <div className="floating-shape floating-shape--one absolute left-[-8%] top-20 h-36 w-36 rounded-full bg-accent-purple/20 blur-3xl" />
+      <div className="floating-shape floating-shape--two absolute bottom-12 right-[4%] h-40 w-40 rounded-full bg-accent-blue/20 blur-3xl" />
 
-      <div className="container mx-auto px-6 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+      <div className="container relative z-10 mx-auto px-4 sm:px-6">
+        <div className="grid items-center gap-10 sm:gap-16 lg:grid-cols-[1.05fr_0.95fr]">
           <motion.div
             initial={{ opacity: 0, x: -80 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, ease: 'easeOut' }}
-            className="space-y-8"
+            className="max-w-2xl"
           >
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, duration: 0.8 }}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-accent-purple/20 to-accent-blue/20 border border-accent-purple/30 rounded-full"
+              className="mb-7 inline-flex items-center gap-2 rounded-full border border-accent-purple/30 bg-gradient-to-r from-accent-purple/15 to-accent-blue/15 px-4 py-2 backdrop-blur"
             >
-              <span className="w-2 h-2 rounded-full bg-accent-purple animate-pulse" />
-              <span className="text-text-secondary text-sm font-medium tracking-wide">Available for hire</span>
+              <span className="h-2.5 w-2.5 animate-pulse rounded-full bg-accent-purple" />
+              <span className="text-sm font-semibold tracking-[0.2em] text-text-secondary uppercase">
+                Available for freelance & full-time roles
+              </span>
             </motion.div>
 
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.8 }}
-              className="text-5xl md:text-7xl font-extrabold leading-tight"
+              className="text-4xl font-black leading-[0.95] sm:text-5xl lg:text-7xl"
             >
-              Hi, I'm <span className="gradient-text">Sagor Roy</span>
+              Hi, I&apos;m{' '}
+              <span className="gradient-text">Sagor Roy</span>
               <br />
-              <div className="h-16 mt-2">
-                <span className="text-text-secondary text-3xl md:text-4xl font-medium">I'm a </span>
-                <span className="text-text-primary text-3xl md:text-4xl font-bold">
+              <span className="mt-4 block text-2xl font-semibold text-text-secondary sm:text-3xl lg:text-5xl">
+                I build{' '}
+                <span className="font-bold text-text-primary">
                   {typingTexts[textIndex].substring(0, charIndex)}
                 </span>
-                <span className="w-1.5 h-10 bg-accent-blue inline-block align-middle ml-1 animate-pulse" />
-              </div>
+                <span className="ml-1 inline-block h-8 w-1.5 animate-pulse bg-accent-blue align-middle sm:h-10" />
+              </span>
             </motion.h1>
 
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.8 }}
-              className="text-text-secondary text-lg md:text-xl leading-relaxed max-w-2xl"
+              className="mt-7 max-w-2xl text-base leading-7 text-text-secondary sm:text-lg sm:leading-8 lg:text-xl"
             >
-              Building beautiful, responsive, and performant web applications with modern technologies.
-              Passionate about creating seamless user experiences and clean, maintainable code.
+              I create polished, conversion-focused web experiences with modern React architecture,
+              thoughtful UI detail, and accessibility-first design.
             </motion.p>
 
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5, duration: 0.8 }}
-              className="flex flex-wrap gap-4 pt-4"
+              className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap"
             >
               <motion.button
-                whileHover={{ y: -3, scale: 1.05 }}
+                whileHover={{ y: -3, scale: 1.03 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => scrollToSection('contact')}
-                className="btn-glow px-8 py-4 bg-gradient-to-r from-accent-purple to-accent-blue text-white font-semibold rounded-full flex items-center gap-3 shadow-xl hover:shadow-2xl transition-all duration-300"
+                className="btn-glow flex items-center justify-center gap-3 rounded-full bg-gradient-to-r from-accent-purple to-accent-blue px-8 py-4 font-semibold text-white shadow-[0_20px_60px_rgba(168,85,247,0.25)] sm:justify-start"
               >
-                Let's Work Together
+                Hire Me
                 <FaArrowRight />
               </motion.button>
               <motion.a
-                whileHover={{ y: -3, scale: 1.05 }}
+                whileHover={{ y: -3, scale: 1.03 }}
                 whileTap={{ scale: 0.95 }}
                 href={resume}
                 download="sagor-roy-cv.txt"
-                className="px-8 py-4 bg-transparent text-text-primary border-2 border-[rgba(148,163,184,0.2)] font-semibold rounded-full flex items-center gap-3 hover:border-accent-purple hover:text-accent-purple transition-all duration-300"
+                className="flex items-center justify-center gap-3 rounded-full border border-white/[0.15] bg-white/[0.10] px-8 py-4 font-semibold text-text-primary backdrop-blur transition-all duration-300 hover:border-accent-purple/40 hover:text-accent-purple sm:justify-start"
               >
                 <FaDownload />
-                Download CV
+                Download Resume
               </motion.a>
             </motion.div>
 
@@ -116,9 +121,9 @@ const Hero = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6, duration: 0.8 }}
-              className="flex items-center gap-4 pt-4"
+              className="mt-8 flex flex-wrap items-center gap-4"
             >
-              <p className="text-text-muted text-sm font-medium">Connect with me:</p>
+              <p className="text-sm font-semibold uppercase tracking-[0.3em] text-text-muted">Connect</p>
               <div className="flex gap-3">
                 {socialLinks.map((link, index) => {
                   const Icon = link.icon;
@@ -128,12 +133,13 @@ const Hero = () => {
                       href={link.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      initial={{ opacity: 0, y: 20 }}
+                      initial={{ opacity: 0, y: 18 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.7 + index * 0.1, duration: 0.8 }}
-                      whileHover={{ y: -8, scale: 1.1, rotate: 5 }}
+                      transition={{ delay: 0.7 + index * 0.08, duration: 0.7 }}
+                      whileHover={{ y: -7, scale: 1.08, rotate: 3 }}
                       whileTap={{ scale: 0.9 }}
-                      className="w-12 h-12 rounded-full glass flex items-center justify-center text-text-secondary hover:bg-gradient-to-r from-accent-purple to-accent-blue hover:text-white hover:shadow-lg transition-all duration-300"
+                      className="flex h-12 w-12 items-center justify-center rounded-full border border-white/[0.10] bg-white/[0.10] text-text-secondary transition-all duration-300 hover:bg-gradient-to-r hover:from-accent-purple hover:to-accent-blue hover:text-white"
+                      aria-label={`Visit ${link.name}`}
                     >
                       <Icon size={18} />
                     </motion.a>
@@ -144,34 +150,38 @@ const Hero = () => {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, scale: 0.8, x: 50 }}
+            initial={{ opacity: 0, scale: 0.9, x: 60 }}
             animate={{ opacity: 1, scale: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.4, ease: 'easeOut' }}
-            className="flex justify-center lg:justify-end"
+            transition={{ duration: 0.8, delay: 0.35, ease: 'easeOut' }}
+            className="relative mx-auto w-full max-w-xl px-2 sm:px-0"
           >
-            <div className="relative">
-              <motion.div
-                animate={{
-                  y: [0, -20, 0],
-                  rotate: [0, 2, -2, 0],
-                }}
-                transition={{
-                  duration: 6,
-                  ease: 'easeInOut',
-                  repeat: Infinity,
-                  repeatType: 'reverse',
-                }}
-              >
-                <div className="absolute inset-0 -z-10 bg-gradient-to-r from-accent-purple to-accent-blue rounded-full blur-3xl opacity-40 scale-110 animate-pulse-slow" />
-                <div className="relative w-72 h-72 md:w-[400px] md:h-[400px] rounded-full overflow-hidden border-4 border-[rgba(148,163,184,0.1)] shadow-2xl">
-                  <img
-                    src={sagorRoy}
-                    alt="Sagor Roy"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              </motion.div>
-            </div>
+            <div className="absolute inset-0 -z-10 rounded-full bg-gradient-to-r from-accent-purple/30 to-accent-blue/30 blur-3xl" />
+            <motion.div
+              animate={{ y: [0, -18, 0], rotate: [0, 2, -2, 0] }}
+              transition={{ duration: 6, ease: 'easeInOut', repeat: Infinity, repeatType: 'reverse' }}
+              className="rounded-[2rem] border border-white/10 bg-gradient-to-br from-white/10 to-white/5 p-3 shadow-[0_40px_120px_rgba(15,23,42,0.35)] backdrop-blur"
+            >
+              <div className="relative overflow-hidden rounded-[1.7rem] border border-white/10">
+                <img src={sagorRoy} alt="Sagor Roy smiling" className="h-full w-full object-cover" loading="lazy" decoding="async" />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/20 via-transparent to-transparent" />
+              </div>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6, duration: 0.7 }}
+              className="absolute -left-4 top-10 hidden rounded-2xl border border-white/10 bg-slate-900/80 px-4 py-3 text-sm font-semibold text-white shadow-xl backdrop-blur sm:block"
+            >
+              3+ years crafting interfaces
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.75, duration: 0.7 }}
+              className="absolute -bottom-4 right-5 hidden rounded-2xl border border-white/10 bg-slate-900/80 px-4 py-3 text-sm font-semibold text-white shadow-xl backdrop-blur sm:block"
+            >
+              React • Tailwind • Framer Motion
+            </motion.div>
           </motion.div>
         </div>
       </div>

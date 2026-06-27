@@ -1,64 +1,46 @@
 import { motion } from 'framer-motion';
 import { experience } from '../../data/experience';
+import SectionHeading from '../ui/SectionHeading';
 
 const Experience = () => {
   return (
     <section id="experience" className="section-padding">
       <div className="container mx-auto px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-20"
-        >
-          <p className="text-accent-purple font-semibold tracking-widest text-sm mb-3 uppercase">
-            My Journey
-          </p>
-          <h2 className="text-4xl md:text-5xl font-extrabold mb-4">
-            Work <span className="gradient-text">Experience</span>
-          </h2>
-        </motion.div>
+        <SectionHeading
+          eyebrow="My Journey"
+          title={<>A timeline of <span className="gradient-text">growth and impact</span></>}
+          description="Each step of the journey has strengthened my ability to ship thoughtful, polished frontend experiences."
+        />
 
-        <div className="max-w-4xl mx-auto relative">
-          {/* Timeline Line */}
-          <div className="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-gradient-to-b from-accent-purple to-accent-blue rounded-full hidden md:block" />
-          <div className="absolute left-4 w-1 h-full bg-gradient-to-b from-accent-purple to-accent-blue rounded-full md:hidden" />
+        <div className="relative mx-auto max-w-4xl">
+          <div className="absolute left-4 top-0 hidden h-full w-1 rounded-full bg-gradient-to-b from-accent-purple to-accent-blue md:left-1/2 md:-translate-x-1/2 md:block" />
+          <div className="absolute left-4 top-0 h-full w-1 rounded-full bg-gradient-to-b from-accent-purple to-accent-blue md:hidden" />
 
           {experience.map((item, index) => (
             <motion.div
               key={item.id}
-              initial={{
-                opacity: 0,
-                x: index % 2 === 0 ? -100 : 100,
-                y: 60,
-              }}
+              initial={{ opacity: 0, x: index % 2 === 0 ? -80 : 80, y: 30 }}
               whileInView={{ opacity: 1, x: 0, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: index * 0.2, ease: 'easeOut' }}
-              className={`relative mb-16 ${
-                index % 2 === 0
-                  ? 'md:text-right md:pr-16 pl-12 md:pl-0'
-                  : 'md:left-1/2 md:pl-16 pl-12'
-              }`}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.75, delay: index * 0.14, ease: 'easeOut' }}
+              className={`relative mb-8 pl-10 md:mb-10 md:pl-0 ${index % 2 === 0 ? 'md:pr-16' : 'md:left-1/2 md:pl-16'}`}
             >
-              {/* Timeline Marker */}
               <motion.div
-                whileHover={{ scale: 1.5, rotate: 180 }}
-                className={`absolute top-8 w-6 h-6 bg-gradient-to-r from-accent-purple to-accent-blue rounded-full border-4 border-bg-primary z-10 ${
-                  index % 2 === 0
-                    ? 'md:right-[-12px] left-4 md:left-auto'
-                    : 'md:left-[-12px] left-4'
-                }`}
+                whileHover={{ scale: 1.4, rotate: 180 }}
+                className={`absolute top-8 h-6 w-6 rounded-full border-4 border-bg-primary bg-gradient-to-r from-accent-purple to-accent-blue ${index % 2 === 0 ? 'left-1 md:right-[-12px] md:left-auto' : 'left-1 md:left-[-12px]'}`}
               />
 
               <motion.div
-                whileHover={{ y: -10, scale: 1.03 }}
-                className="glass card-hover p-8 rounded-3xl"
+                whileHover={{ y: -8, scale: 1.01 }}
+                className="glass card-hover rounded-[1.8rem] p-8"
               >
-                <p className="text-accent-blue font-semibold text-sm mb-2">{item.date}</p>
-                <h3 className="text-2xl font-bold mb-4">{item.title}</h3>
-                <p className="text-text-secondary leading-relaxed">{item.description}</p>
+                <div className="mb-3 flex flex-wrap items-center gap-3">
+                  <span className="rounded-full border border-accent-purple/20 bg-accent-purple/10 px-3 py-1 text-sm font-semibold uppercase tracking-[0.2em] text-accent-purple">
+                    {item.date}
+                  </span>
+                </div>
+                <h3 className="mb-3 text-2xl font-semibold text-text-primary">{item.title}</h3>
+                <p className="text-base leading-8 text-text-secondary">{item.description}</p>
               </motion.div>
             </motion.div>
           ))}

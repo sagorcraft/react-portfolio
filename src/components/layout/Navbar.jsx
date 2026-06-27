@@ -1,14 +1,24 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import { FaBars, FaMoon, FaSun, FaTimes } from 'react-icons/fa';
-import { motion, AnimatePresence } from 'framer-motion';
+
+const navLinks = [
+  { id: 'home', label: 'Home' },
+  { id: 'about', label: 'About' },
+  { id: 'skills', label: 'Skills' },
+  { id: 'projects', label: 'Projects' },
+  { id: 'services', label: 'Services' },
+  { id: 'contact', label: 'Contact' },
+];
 
 const Navbar = ({ theme, toggleTheme }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState('home');
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+      setIsScrolled(window.scrollY > 40);
     };
 
     const handleResize = () => {
@@ -17,10 +27,28 @@ const Navbar = ({ theme, toggleTheme }) => {
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      { threshold: 0.35 }
+    );
+
+    navLinks.forEach((link) => {
+      const element = document.getElementById(link.id);
+      if (element) observer.observe(element);
+    });
+
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
     window.addEventListener('resize', handleResize);
 
     return () => {
+      observer.disconnect();
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('resize', handleResize);
     };
@@ -33,19 +61,10 @@ const Navbar = ({ theme, toggleTheme }) => {
     };
   }, [isMobileMenuOpen]);
 
-  const navLinks = [
-    { id: 'home', label: 'Home' },
-    { id: 'about', label: 'About' },
-    { id: 'skills', label: 'Skills' },
-    { id: 'projects', label: 'Projects' },
-    { id: 'services', label: 'Services' },
-    { id: 'contact', label: 'Contact' },
-  ];
-
   const scrollToSection = (id) => {
     const element = document.getElementById(id);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
       setIsMobileMenuOpen(false);
     }
   };
@@ -55,88 +74,73 @@ const Navbar = ({ theme, toggleTheme }) => {
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: 'easeOut' }}
-      className={`fixed top-0 left-0 w-full z-50 py-4 transition-all duration-500 ${
-        isScrolled
-          ? 'glass shadow-2xl border-b border-[rgba(148,163,184,0.1)] py-3'
-          : ''
+      className={`fixed inset-x-0 top-0 z-50 py-3 transition-all duration-500 ${
+        isScrolled ? 'glass shadow-[0_20px_70px_rgba(15,23,42,0.22)]' : 'bg-transparent'
       }`}
     >
-      <div className="container mx-auto px-6 flex justify-between items-center">
-        <motion.div
-          whileHover={{ scale: 1.05 }}
+      <div className="container mx-auto flex items-center justify-between px-6">
+        <motion.button
+          whileHover={{ scale: 1.04 }}
           whileTap={{ scale: 0.95 }}
-          className="text-2xl font-extrabold"
+          onClick={() => scrollToSection('home')}
+          className="rounded-full border border-white/10 bg-white/10 px-4 py-2 text-sm font-semibold tracking-[0.25em] text-text-primary backdrop-blur"
+          aria-label="Go to home section"
         >
-          <span className="gradient-text">SR</span>
-        </motion.div>
+          SR<span className="ml-1 gradient-text">.</span>
+        </motion.button>
 
-        {/* Desktop Nav */}
-        <ul className="hidden md:flex gap-10 items-center">
+        <ul className="hidden items-center gap-8 md:flex">
           {navLinks.map((link, index) => (
             <motion.li
               key={link.id}
-              initial={{ opacity: 0, y: -20 }}
+              initial={{ opacity: 0, y: -12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
+              transition={{ duration: 0.45, delay: index * 0.05 }}
               className="group"
             >
               <button
                 onClick={() => scrollToSection(link.id)}
-                className="text-text-secondary font-medium text-sm tracking-wide hover:text-text-primary relative transition-all duration-300"
+                aria-current={activeSection === link.id ? 'page' : undefined}
+                className={`relative text-sm font-medium tracking-[0.2em] uppercase transition-colors duration-300 ${
+                  activeSection === link.id ? 'text-text-primary' : 'text-text-secondary hover:text-text-primary'
+                }`}
               >
                 {link.label}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-accent-purple to-accent-blue transition-all duration-300 group-hover:w-full rounded-full" />
+                <span className="absolute -bottom-2 left-0 h-0.5 rounded-full bg-gradient-to-r from-accent-purple to-accent-blue transition-all duration-300 group-hover:w-full" style={{ width: activeSection === link.id ? '100%' : '0%' }} />
               </button>
             </motion.li>
           ))}
-          <div className="flex items-center gap-3">
-            <motion.button
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: navLinks.length * 0.1 }}
-              whileHover={{ y: -3, scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={toggleTheme}
-              className="w-11 h-11 rounded-full glass flex items-center justify-center text-text-primary hover:text-accent-blue transition-all duration-300"
-              aria-label="Toggle theme"
-            >
-              {theme === 'dark' ? <FaSun /> : <FaMoon />}
-            </motion.button>
-            <motion.button
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: navLinks.length * 0.1 + 0.05 }}
-              whileHover={{ y: -3, scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => scrollToSection('contact')}
-              className="btn-glow px-6 py-3 bg-gradient-to-r from-accent-purple to-accent-blue text-white font-semibold rounded-full text-sm tracking-wide shadow-lg hover:shadow-xl transition-all duration-300"
-            >
-              Hire Me
-            </motion.button>
-          </div>
         </ul>
 
-        {/* Mobile Menu Toggle */}
-        <div className="flex items-center gap-3 md:hidden">
+        <div className="flex items-center gap-3">
           <motion.button
-            whileTap={{ scale: 0.9 }}
-            className="w-10 h-10 rounded-full glass flex items-center justify-center text-text-primary"
+            whileHover={{ y: -2, scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             onClick={toggleTheme}
-            aria-label="Toggle theme"
+            className="flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/10 text-text-primary backdrop-blur transition-all duration-300 hover:border-accent-purple/40"
+            aria-label="Toggle color theme"
           >
             {theme === 'dark' ? <FaSun /> : <FaMoon />}
           </motion.button>
           <motion.button
+            whileHover={{ y: -2, scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => scrollToSection('contact')}
+            className="btn-glow hidden rounded-full bg-gradient-to-r from-accent-purple to-accent-blue px-6 py-3 text-sm font-semibold text-white shadow-[0_15px_40px_rgba(168,85,247,0.25)] md:inline-flex"
+          >
+            Hire Me
+          </motion.button>
+          <motion.button
             whileTap={{ scale: 0.9 }}
-            className="text-2xl text-text-primary"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/10 text-2xl text-text-primary md:hidden"
+            onClick={() => setIsMobileMenuOpen((prev) => !prev)}
+            aria-label="Toggle mobile navigation"
           >
             {isMobileMenuOpen ? <FaTimes /> : <FaBars />}
           </motion.button>
         </div>
       </div>
 
-      {/* Mobile Menu */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <>
@@ -145,37 +149,39 @@ const Navbar = ({ theme, toggleTheme }) => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsMobileMenuOpen(false)}
-              className="md:hidden fixed inset-0 z-40 bg-slate-950/70 backdrop-blur-sm"
+              className="fixed inset-0 z-40 bg-slate-950/70 backdrop-blur-sm md:hidden"
               aria-label="Close mobile menu"
             />
             <motion.div
               initial={{ x: '100%' }}
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
-              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="md:hidden fixed top-0 right-0 h-full w-4/5 bg-gradient-to-br from-bg-secondary to-bg-primary backdrop-blur-3xl border-l border-[rgba(148,163,184,0.1)] p-10 flex flex-col gap-8 z-50"
+              transition={{ type: 'spring', damping: 24, stiffness: 180 }}
+              className="fixed right-0 top-0 z-50 flex h-full w-4/5 flex-col gap-6 border-l border-white/10 bg-gradient-to-br from-bg-secondary to-bg-primary p-8 pt-20 shadow-2xl md:hidden"
             >
-            {navLinks.map((link, index) => (
+              {navLinks.map((link, index) => (
+                <motion.button
+                  key={link.id}
+                  initial={{ x: 30, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  transition={{ delay: index * 0.06 }}
+                  whileHover={{ x: 4 }}
+                  onClick={() => scrollToSection(link.id)}
+                  className={`text-left text-lg font-medium tracking-[0.2em] uppercase transition-colors ${
+                    activeSection === link.id ? 'text-text-primary' : 'text-text-secondary hover:text-text-primary'
+                  }`}
+                >
+                  {link.label}
+                </motion.button>
+              ))}
               <motion.button
-                key={link.id}
-                initial={{ x: 50, opacity: 0 }}
+                initial={{ x: 30, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
-                transition={{ delay: index * 0.1 }}
-                whileHover={{ x: 5 }}
-                onClick={() => scrollToSection(link.id)}
-                className="text-text-secondary font-medium text-lg tracking-wide hover:text-text-primary transition-all duration-300 text-left"
-              >
-                {link.label}
-              </motion.button>
-            ))}
-              <motion.button
-                initial={{ x: 50, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                transition={{ delay: navLinks.length * 0.1 }}
-                whileHover={{ scale: 1.05 }}
+                transition={{ delay: navLinks.length * 0.06 }}
+                whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => scrollToSection('contact')}
-                className="mt-8 px-8 py-4 bg-gradient-to-r from-accent-purple to-accent-blue text-white font-semibold rounded-2xl text-sm tracking-wide shadow-lg hover:shadow-xl transition-all duration-300"
+                className="mt-4 rounded-full bg-gradient-to-r from-accent-purple to-accent-blue px-6 py-3 text-sm font-semibold text-white shadow-lg"
               >
                 Get In Touch
               </motion.button>

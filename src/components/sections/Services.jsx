@@ -1,59 +1,39 @@
 import { motion } from 'framer-motion';
 import { services } from '../../data/services';
+import SectionHeading from '../ui/SectionHeading';
 
 const Services = () => {
   return (
     <section id="services" className="section-padding bg-gradient-to-b from-[rgba(30,41,59,0.3)] to-transparent">
       <div className="container mx-auto px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-20"
-        >
-          <p className="text-accent-blue font-semibold tracking-widest text-sm mb-3 uppercase">
-            What I Do
-          </p>
-          <h2 className="text-4xl md:text-5xl font-extrabold mb-4">
-            My <span className="gradient-text">Services</span>
-          </h2>
-        </motion.div>
+        <SectionHeading
+          eyebrow="What I Do"
+          title={<>Designing and building <span className="gradient-text">high-conversion digital products</span></>}
+          description="From concept to launch, I help brands and founders create interfaces that feel premium and perform reliably."
+        />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-4">
           {services.map((service, index) => {
             const Icon = service.icon;
             return (
               <motion.div
                 key={service.id}
-                initial={{ opacity: 0, y: 60, scale: 0.9 }}
+                initial={{ opacity: 0, y: 55, scale: 0.95 }}
                 whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.7, delay: index * 0.15, ease: 'easeOut' }}
-                whileHover={{
-                  y: -20,
-                  scale: 1.08,
-                  boxShadow: '0 30px 60px -15px rgba(168, 85, 247, 0.4)',
-                }}
-                className="glass card-hover p-8 rounded-2xl text-center group hover:border-accent-purple/50 transition-all duration-300"
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.7, delay: index * 0.12, ease: 'easeOut' }}
+                whileHover={{ y: -14, scale: 1.03, boxShadow: '0 24px 60px -16px rgba(168, 85, 247, 0.35)' }}
+                className="group rounded-[1.8rem] border border-white/10 bg-gradient-to-br from-white/8 to-white/5 p-8 text-center shadow-[0_20px_80px_rgba(15,23,42,0.12)]"
               >
                 <motion.div
-                  animate={{
-                    rotate: [0, 5, -5, 0],
-                    y: [0, -5, 0],
-                  }}
-                  transition={{
-                    duration: 5,
-                    ease: 'easeInOut',
-                    repeat: Infinity,
-                    repeatType: 'reverse',
-                  }}
-                  className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-gradient-to-r from-accent-purple to-accent-blue flex items-center justify-center text-white text-3xl shadow-lg group-hover:shadow-xl transition-shadow duration-300"
+                  animate={{ rotate: [0, 5, -5, 0], y: [0, -6, 0] }}
+                  transition={{ duration: 5, ease: 'easeInOut', repeat: Infinity, repeatType: 'reverse' }}
+                  className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-[1.2rem] bg-gradient-to-r from-accent-purple to-accent-blue text-3xl text-white shadow-lg"
                 >
                   <Icon />
                 </motion.div>
-                <h3 className="text-lg font-bold mb-3">{service.title}</h3>
-                <p className="text-text-secondary text-sm leading-relaxed">{service.description}</p>
+                <h3 className="mb-3 text-xl font-semibold text-text-primary">{service.title}</h3>
+                <p className="text-base leading-8 text-text-secondary">{service.description}</p>
               </motion.div>
             );
           })}

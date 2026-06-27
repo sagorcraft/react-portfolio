@@ -17,7 +17,7 @@ const ScrollProgressIndicator = () => {
 
   return (
     <motion.div
-      className="fixed top-0 left-0 h-1 bg-gradient-to-r from-accent-purple to-accent-blue z-[1000"
+      className="fixed left-0 top-0 z-[1000] h-1 bg-gradient-to-r from-accent-purple to-accent-blue"
       style={{ width: `${scrollProgress}%` }}
       transition={{ duration: 0.1 }}
     />
