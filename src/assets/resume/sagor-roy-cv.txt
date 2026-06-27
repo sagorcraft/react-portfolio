@@ -1,0 +1,26 @@
+Sagor Roy
+Frontend Developer
+
+Contact
+Email: sagorroy4778@gmail.com
+GitHub: https://github.com/sagorcraft
+LinkedIn: https://www.linkedin.com/in/sagorroy007/
+
+Summary
+Passionate frontend developer focused on building responsive, modern, and user-friendly web interfaces with React, Tailwind CSS, and Framer Motion.
+
+Skills
+- React.js
+- Vite
+- Tailwind CSS
+- JavaScript / ES6+
+- HTML5 / CSS3
+- UI/UX Design
+- Git / GitHub
+
+Experience
+- Developed polished portfolio and landing pages with reusable React components.
+- Built responsive user interfaces with animation and accessibility in mind.
+
+Education
+- Bachelor of Science / Relevant field
